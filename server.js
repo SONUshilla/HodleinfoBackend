@@ -15,7 +15,7 @@ const db = new Client({
 try {
     // Establish connection
     db.connect();
-    Database=false;
+    Database=true;
     console.log("Connected to the database successfully");
 } catch (err) {
     console.error("Error connecting to the database:", err.stack);
@@ -31,18 +31,18 @@ const app=express();
     for(i=0;i<10;i++)
     {   if(Database)
     {
-            /*await db.query("delete from crypto");*/
+            await db.query("delete from crypto");
             await db.query(`insert into crypto (name,last,buy,sell,volume,base_unit) Values ($1,$2,$3,$4,$5,$6)`,[dataArray[i].name,dataArray[i].last,dataArray[i].buy,dataArray[i].sell,dataArray[i].volume,dataArray[i].base_unit]);
             console.log("data added successfully");}
+            else{
              const data={name:dataArray[i].name,
             last:dataArray[i].last,
             buy: dataArray[i].buy
             ,sell:dataArray[i].sell
             ,volume:dataArray[i].volume
             ,base_unit:dataArray[i].base_unit}
-            localdata.push(data);
+            localdata.push(data);}
         }
-        console.log(localdata);
     }
     catch(error)
     {   res.sendStatus(500);
